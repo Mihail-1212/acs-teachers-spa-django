@@ -7,3 +7,4 @@ activate.bat
 
 # Django vars
 __pycache__/
+assets/

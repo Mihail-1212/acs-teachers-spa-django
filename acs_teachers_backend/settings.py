@@ -12,14 +12,22 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import environ
+import os
+import sys
 
 # .env file
 env = environ.Env()
-# reading .env file
-environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Take environment variables from .env file (AFTER INITIAL BASE_DIR)
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
+# Add /apps folder to python path 
+# https://stackoverflow.com/a/3948821
+PROJECT_ROOT = os.path.dirname(__file__)
+sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
 
 
 # Quick-start development settings - unsuitable for production
@@ -41,11 +49,11 @@ else:
 """
 Project Apps Definitions
 Django Apps - Django Internal Apps
-Third Party Apps - Apps installed via requirements.txt
+Third Party Apps before django - Apps installed via requirements.txt, which add before django apps
+Third Party Apps after django - Apps installed via requirements.txt, which add after django apps
 Project Apps - Project owned / created apps
 Installed Apps = Django Apps + Third Part apps + Projects Apps
 """
-
 
 # Application definition
 
@@ -56,9 +64,15 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django.contrib.sites',
 ]
 
-THIRD_PARTY_APPS = [
+THIRD_PARTY_APPS_BEFORE = [
+    'grappelli',
+]
+
+THIRD_PARTY_APPS_AFTER = [
     'rest_framework',
     'rest_framework_swagger',
     'corsheaders',
@@ -66,9 +80,10 @@ THIRD_PARTY_APPS = [
 ]
 
 PROJECT_APPS = [
+    'journal',
 ]
 
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
+INSTALLED_APPS = THIRD_PARTY_APPS_BEFORE + DJANGO_APPS + THIRD_PARTY_APPS_AFTER + PROJECT_APPS
 
 """
 Middleware definitions
@@ -103,7 +118,7 @@ ROOT_URLCONF = 'acs_teachers_backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'templates'],   # os.path.join(BASE_DIR, 'templates')
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -118,12 +133,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'acs_teachers_backend.wsgi.application'
 
+# Site settings
+# https://docs.djangoproject.com/en/4.1/ref/contrib/sites/#module-django.contrib.sites
+
+SITE_ID = 1
+
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': end.db('DATABASE_URL')
+    'default': env.db('DATABASE_URL')
 }
 
 
@@ -163,6 +183,12 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
@@ -194,9 +220,9 @@ LOGGING  = {
 # https://github.com/adamchainz/django-cors-headers#setup
 
 if DEBUG:
-    CORS_ALLOWED_ORIGINS = ['*']
+    CORS_ALLOWED_ORIGINS = ['http://127.0.0.1:8080']
 else:
-    CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS', default=['*'])
+    CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS', default=['http://127.0.0.1:8080'])
 
 CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
 CORS_ALLOW_CREDENTIALS = True
