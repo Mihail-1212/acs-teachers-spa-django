@@ -1,0 +1,9 @@
+# Remove enviroment folder from pushing
+env/
+# Env file
+.env
+# Remove activate file from pushing
+activate.bat
+
+# Django vars
+__pycache__/
