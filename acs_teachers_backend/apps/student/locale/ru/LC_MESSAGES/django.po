@@ -37,4 +37,4 @@ msgstr "студент"
 
 #: .\models\student.py:21
 msgid "students"
-msgstr "студент"
+msgstr "студенты"
