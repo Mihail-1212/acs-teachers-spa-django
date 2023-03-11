@@ -15,8 +15,24 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.conf import settings
+from django.conf.urls.static import static
+from django.views.generic.base import RedirectView
+from django.templatetags.static import static as static_file
 
 urlpatterns = [
-    path('grappelli/', include('grappelli.urls')), # grappelli URLS
+    path('grappelli/', include('grappelli.urls')), # grappelli URLS (custom admin panel)
     path('admin/', admin.site.urls),
-]
+] 
+
+# https://docs.djangoproject.com/en/4.1/howto/static-files/#serving-static-files-during-development
+urlpatterns = urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# https://docs.djangoproject.com/en/4.1/howto/static-files/#serving-files-uploaded-by-a-user-during-development
+urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+# Add favicon to url path
+favicon_view = RedirectView.as_view(url=static_file('icons/favicon.ico'), permanent=True)
+
+urlpatterns.append(path('favicon.ico/', favicon_view))

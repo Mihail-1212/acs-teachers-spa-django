@@ -64,8 +64,6 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    'django.contrib.sites',
 ]
 
 THIRD_PARTY_APPS_BEFORE = [
@@ -81,6 +79,8 @@ THIRD_PARTY_APPS_AFTER = [
 
 PROJECT_APPS = [
     'journal',
+    'teacher',
+    'student',
 ]
 
 INSTALLED_APPS = THIRD_PARTY_APPS_BEFORE + DJANGO_APPS + THIRD_PARTY_APPS_AFTER + PROJECT_APPS
@@ -100,6 +100,8 @@ DJANGO_MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 THIRD_PARTY_MIDDLEWARE_BEFORE_DJANGO = [
@@ -133,11 +135,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'acs_teachers_backend.wsgi.application'
 
-# Site settings
-# https://docs.djangoproject.com/en/4.1/ref/contrib/sites/#module-django.contrib.sites
-
-SITE_ID = 1
-
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -169,13 +166,21 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'ru-ru'
+LANGUAGE_CODE = 'ru-RU'
+
+# https://docs.djangoproject.com/en/4.1/ref/settings/#locale-paths 
+LOCALE_PATHS = [
+	os.path.join(BASE_DIR, 'locale'),
+]
 
 TIME_ZONE = 'Asia/Yekaterinburg'
 
 USE_I18N = True
 
 USE_TZ = True
+
+# https://stackoverflow.com/a/70709867
+USE_L10N = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -188,6 +193,12 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
+
+# Media files 
+
+MEDIA_URL = 'media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -226,3 +237,7 @@ else:
 
 CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
 CORS_ALLOW_CREDENTIALS = True
+
+# DATE settings
+
+DATE_INPUT_FORMATS = ['%d.%m.%Y']
