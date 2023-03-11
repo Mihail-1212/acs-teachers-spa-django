@@ -1,6 +1,6 @@
 """
-EduOrganization.py file
-Education organization model class
+edu_organization.py file
+EducationOrganization model class
 """
 from django.db import models
 from django.utils.translation import gettext_lazy as _
