@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-10 21:56+0500\n"
+"POT-Creation-Date: 2023-03-11 21:13+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,55 +16,86 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
-"(n%100>=11 && n%100<=14)? 2 : 3);\n"
-#: .\models\edu_organization.py:9 .\models\speciality.py:9
-#: .\models\student_group.py:14
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: .\apps.py:8 .\models\journal.py:27
+msgid "journals"
+msgstr "журналы"
+
+#: .\models\discipline.py:14 .\models\edu_organization.py:9
+#: .\models\journal.py:17 .\models\speciality.py:13
+#: .\models\student_group.py:16
 msgid "name"
 msgstr "название"
 
-#: .\models\edu_organization.py:10 .\models\speciality.py:10
-#: .\models\student_group.py:15
+#: .\models\discipline.py:15 .\models\edu_organization.py:10
+#: .\models\speciality.py:14 .\models\student_group.py:17
 msgid "abbreviation"
 msgstr "аббревиатура"
 
-#: .\models\edu_organization.py:13 .\models\student_group.py:21
-msgid "education organization"
-msgstr "образовательная организация"
-
-#: .\models\edu_organization.py:14
-msgid "education organizations"
-msgstr "образовательные организации"
-
-#: .\models\speciality.py:13 .\models\student_group.py:22
-msgid "speciality"
-msgstr "специальность"
-
-#: .\models\speciality.py:14
-msgid "specialities"
-msgstr "специальности"
-
-#: .\models\student_group.py:16
+#: .\models\discipline.py:16 .\models\journal.py:18 .\models\semester.py:14
+#: .\models\student_group.py:18
 msgid "slug"
 msgstr "url идентификатор"
 
-#: .\models\student_group.py:17
-msgid "date education start"
-msgstr "дата начала обучения"
+#: .\models\discipline.py:18 .\models\speciality.py:20
+msgid "specialities"
+msgstr "специальности"
 
-#: .\models\student_group.py:18
-msgid "date education end"
-msgstr "дата окончания обучения"
+#: .\models\discipline.py:21 .\models\journal.py:21
+msgid "discipline"
+msgstr "дисциплина"
 
-#: .\models\student_group.py:19
-msgid "is commercial"
-msgstr "является коммерческим"
+#: .\models\discipline.py:22
+msgid "disciplines"
+msgstr "дисциплины"
 
-#: .\models\student_group.py:25
+#: .\models\edu_organization.py:13 .\models\student_group.py:24
+msgid "education organization"
+msgstr "образовательная организация"
+
+#: .\models\edu_organization.py:14 .\models\speciality.py:16
+msgid "education organizations"
+msgstr "образовательные организации"
+
+#: .\models\journal.py:20 .\models\semester.py:17
+msgid "semester"
+msgstr "семестр"
+
+#: .\models\journal.py:22 .\models\student_group.py:27
 msgid "student group"
 msgstr "студенческая группа"
 
-#: .\models\student_group.py:26
+#: .\models\journal.py:23
+msgid "teacher"
+msgstr "учитель"
+
+#: .\models\journal.py:26
+msgid "journal"
+msgstr "учителя"
+
+#: .\models\semester.py:12 .\models\student_group.py:19
+msgid "date education start"
+msgstr "дата начала обучения"
+
+#: .\models\semester.py:13 .\models\student_group.py:20
+msgid "date education end"
+msgstr "дата окончания обучения"
+
+#: .\models\semester.py:18
+msgid "semesters"
+msgstr "семестры"
+
+#: .\models\speciality.py:19 .\models\student_group.py:23
+msgid "speciality"
+msgstr "специальность"
+
+#: .\models\student_group.py:21
+msgid "is commercial"
+msgstr "является коммерческим"
+
+#: .\models\student_group.py:28
 msgid "student groups"
 msgstr "студенческие группы"
