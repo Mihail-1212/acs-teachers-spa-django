@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-11 21:13+0500\n"
+"POT-Creation-Date: 2023-03-12 16:06+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,9 +20,9 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: .\apps.py:8 .\models\journal.py:27
-msgid "journals"
-msgstr "журналы"
+#: .\apps.py:8
+msgid "Journals and education"
+msgstr "Журналы и образование"
 
 #: .\models\discipline.py:14 .\models\edu_organization.py:9
 #: .\models\journal.py:17 .\models\speciality.py:13
@@ -75,6 +75,10 @@ msgstr "учитель"
 #: .\models\journal.py:26
 msgid "journal"
 msgstr "учителя"
+
+#: .\models\journal.py:27
+msgid "journals"
+msgstr "журналы"
 
 #: .\models\semester.py:12 .\models\student_group.py:19
 msgid "date education start"
