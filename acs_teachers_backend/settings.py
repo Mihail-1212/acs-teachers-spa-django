@@ -81,6 +81,7 @@ PROJECT_APPS = [
     'journal',
     'teacher',
     'student',
+    'authorization',
 ]
 
 INSTALLED_APPS = THIRD_PARTY_APPS_BEFORE + DJANGO_APPS + THIRD_PARTY_APPS_AFTER + PROJECT_APPS
@@ -241,3 +242,8 @@ CORS_ALLOW_CREDENTIALS = True
 # DATE settings
 
 DATE_INPUT_FORMATS = ['%d.%m.%Y']
+
+
+# Auth settings
+
+AUTH_USER_MODEL = 'authorization.User'
