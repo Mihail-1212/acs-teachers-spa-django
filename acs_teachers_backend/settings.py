@@ -81,6 +81,7 @@ PROJECT_APPS = [
     'journal',
     'teacher',
     'student',
+    'lesson',
     'authorization',
 ]
 
