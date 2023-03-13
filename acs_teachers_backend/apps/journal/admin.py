@@ -3,16 +3,26 @@ from django.contrib import admin
 
 from .models import *
 
-# Register your models here.
+
+
+class SemesterAdmin(admin.ModelAdmin):
+	list_display = ('date_start', 'date_end', 'slug', )
+	readonly_fields = ('slug',)
+
+class StudentGroupAdmin(admin.ModelAdmin):
+	list_display = ('name', 'abbr', 'date_start_edu', 'is_commercial', 'slug')
+
+class JournalAdmin(admin.ModelAdmin):
+	list_display = ('name', 'semester', 'discipline', 'student_group', 'teacher', 'slug')
 
 
 admin.site.register(EduOrganization)
 admin.site.register(Speciality)
-admin.site.register(StudentGroup)
+admin.site.register(StudentGroup, StudentGroupAdmin)
 
-admin.site.register(Semester)
+admin.site.register(Semester, SemesterAdmin)
 admin.site.register(Discipline)
-admin.site.register(Journal)
+admin.site.register(Journal, JournalAdmin)
 
 # if settings.DEBUG:
 # 	admin.site.register(Journal)

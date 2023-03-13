@@ -12,3 +12,7 @@ class EduOrganization(models.Model):
 	class Meta:
 		verbose_name = _('education organization')
 		verbose_name_plural = _('education organizations')
+
+	def __str__(self):
+		return self.abbr
+	

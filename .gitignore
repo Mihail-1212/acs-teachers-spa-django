@@ -3,8 +3,11 @@ env/
 # Env file
 .env
 # Remove activate file from pushing
-activate.bat
+activate.*
 
 # Django vars
 __pycache__/
 assets/
+
+# IDE req
+.idea/
