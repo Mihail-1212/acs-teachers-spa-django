@@ -5,10 +5,11 @@ from django.contrib.auth.admin import UserAdmin
 from .models import User
 from .forms import AuthUserCreationForm, AuthUserChangeForm
 
+
 class AuthUserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
-        (_('Personal info'), {'fields': ('first_name', 'second_name', 'last_name', 'email')}),
+        (_('Personal info'), {'fields': ('last_name', 'first_name', 'second_name', 'email')}),
         (_('Permissions'), {
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
         }),
