@@ -5,6 +5,7 @@ Discipline model class
 import cyrtranslit
 
 from django.db import models
+from django.shortcuts import reverse
 from django.utils.translation import gettext_lazy as _
 
 from .speciality import Speciality
@@ -33,6 +34,9 @@ class Discipline(models.Model):
 				abbr = cyrtranslit.to_latin(self.abbr.replace(" ", "")),
 			)
 		super().save(*args, **kwargs)
+
+	# def get_absolute_url(self):
+	# 	return ""
 
 	def __str__(self):
 		return "%s (%s)" % (self.abbr, self.name)

@@ -38,3 +38,5 @@ class Lesson(models.Model):
 
     def __str__(self):
         return "%s (%s)" % (self.name, self.number)
+
+    # TODO: При создании создание экзмепляров Attendance для всех студентов в группе journal.student_group

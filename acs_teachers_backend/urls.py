@@ -19,14 +19,25 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic.base import RedirectView
 from django.templatetags.static import static as static_file
+from rest_framework_swagger.views import get_swagger_view
+
+
+# https://django-rest-swagger.readthedocs.io/en/latest/
+schema_view = get_swagger_view(title='ACS API')
+
 
 urlpatterns = [
-    path('grappelli/', include('grappelli.urls')), # grappelli URLS (custom admin panel)
+    # grappelli URLS (custom admin panel)
+    path('grappelli/', include('grappelli.urls')),
     path('admin/', admin.site.urls),
-] 
+    path('swagger/', schema_view),
+    path('api-journal/', include('journal.urls')),
+]
+
 
 # https://docs.djangoproject.com/en/4.1/howto/static-files/#serving-static-files-during-development
 urlpatterns = urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
 
 # https://docs.djangoproject.com/en/4.1/howto/static-files/#serving-files-uploaded-by-a-user-during-development
 if settings.DEBUG:
@@ -35,5 +46,4 @@ if settings.DEBUG:
 
 # Add favicon to url path
 favicon_view = RedirectView.as_view(url=static_file('icons/favicon.ico'), permanent=True)
-
 urlpatterns.append(path('favicon.ico/', favicon_view))

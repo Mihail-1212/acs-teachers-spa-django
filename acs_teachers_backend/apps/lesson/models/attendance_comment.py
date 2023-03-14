@@ -11,6 +11,8 @@ from .attendance import Attendance
 
 class AttendanceComment(models.Model):
     related_name = 'attendance_comments'
+    # folder name for subdirectory media (model_name + 'media')
+    media_upload_path = 'attendance_comment_media'
 
     message = models.TextField(max_length=500, verbose_name=_('message'))
     pub_date = models.DateTimeField(default=timezone.now, verbose_name=_('publish date'))
@@ -21,7 +23,7 @@ class AttendanceComment(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_('author'),
                                  related_name=related_name)
 
-    media = models.FileField(verbose_name=_('file'))
+    media = models.FileField(upload_to=media_upload_path, verbose_name=_('file'))
 
     class Meta:
         verbose_name = _('attendance comment')
