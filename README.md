@@ -19,7 +19,7 @@ Application structure:
     ├── assets (auto generate)      # Auto generated directory for compile static files
     ├── docs (empty)                # Directory for documentation
     ├── media (auto generate)       # Auto generated directory for user files
-    ├── static (auto generate)      # Auto generated directory for static files
+    ├── static                      # Main directory for static files
     ├── .env                        # File within environment variables
     ├── LICENSE                     # License file
     ├── manage.py                   # Main django file
