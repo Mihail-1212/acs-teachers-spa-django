@@ -14,23 +14,42 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic.base import RedirectView
 from django.templatetags.static import static as static_file
-from rest_framework_swagger.views import get_swagger_view
+
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
 
 
-# https://django-rest-swagger.readthedocs.io/en/latest/
-schema_view = get_swagger_view(title='ACS API')
+schema_view = get_schema_view(
+   openapi.Info(
+      title="Journal and Lessons api",
+      default_version='v1',
+      description="Api for auto control system site",
+      contact=openapi.Contact(email="m.a.mokruschin@yandex.ru"),
+      license=openapi.License(name="MIT License"),
+   ),
+   public=True,
+   permission_classes=[permissions.AllowAny],
+)
 
 
 urlpatterns = [
-    # grappelli URLS (custom admin panel)
+    # Admin routes
     path('grappelli/', include('grappelli.urls')),
     path('admin/', admin.site.urls),
-    path('swagger/', schema_view),
+
+    # path('swagger/', schema_view),
+    # Swagger routes
+    re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+
+    # API routes
     path('api-journal/', include('journal.urls')),
 ]
 

@@ -29,7 +29,6 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 PROJECT_ROOT = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -44,7 +43,6 @@ if DEBUG:
     ALLOWED_HOSTS = ['*']
 else:
     ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['example.com'])
-
 
 """
 Project Apps Definitions
@@ -72,9 +70,9 @@ THIRD_PARTY_APPS_BEFORE = [
 
 THIRD_PARTY_APPS_AFTER = [
     'rest_framework',
-    'rest_framework_swagger',
     'corsheaders',
     'django_filters',
+    'drf_yasg',
 ]
 
 PROJECT_APPS = [
@@ -87,14 +85,14 @@ PROJECT_APPS = [
 
 INSTALLED_APPS = THIRD_PARTY_APPS_BEFORE + DJANGO_APPS + THIRD_PARTY_APPS_AFTER + PROJECT_APPS
 
-
 # https://www.django-rest-framework.org/#example
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
 }
 
 """
@@ -112,27 +110,26 @@ DJANGO_MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
+
     'django.middleware.locale.LocaleMiddleware',
 ]
 
 THIRD_PARTY_MIDDLEWARE_BEFORE_DJANGO = [
-    'corsheaders.middleware.CorsMiddleware', # before ...CommonMiddleware
+    'corsheaders.middleware.CorsMiddleware',  # before ...CommonMiddleware
 ]
 
 THIRD_PARTY_MIDDLEWARE_AFTER_DJANGO = [
-    'whitenoise.middleware.WhiteNoiseMiddleware',   # after ...SecurityMiddleware
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # after ...SecurityMiddleware
 ]
 
 MIDDLEWARE = THIRD_PARTY_MIDDLEWARE_BEFORE_DJANGO + DJANGO_MIDDLEWARE + THIRD_PARTY_MIDDLEWARE_AFTER_DJANGO
-
 
 ROOT_URLCONF = 'acs_teachers_backend.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],   # os.path.join(BASE_DIR, 'templates')
+        'DIRS': [BASE_DIR / 'templates'],  # os.path.join(BASE_DIR, 'templates')
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -147,14 +144,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'acs_teachers_backend.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
     'default': env.db('DATABASE_URL')
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -174,7 +169,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -182,7 +176,7 @@ LANGUAGE_CODE = 'ru-RU'
 
 # https://docs.djangoproject.com/en/4.1/ref/settings/#locale-paths 
 LOCALE_PATHS = [
-	os.path.join(BASE_DIR, 'locale'),
+    os.path.join(BASE_DIR, 'locale'),
 ]
 
 TIME_ZONE = 'Asia/Yekaterinburg'
@@ -194,14 +188,13 @@ USE_TZ = True
 # https://stackoverflow.com/a/70709867
 USE_L10N = False
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'static'),
 ]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
@@ -223,7 +216,7 @@ ADMIN_URL = env('ADMIN_URL', default='admin/')
 # Logging configuration dictionary
 # https://docs.djangoproject.com/en/4.1/ref/settings/#logging
 
-LOGGING  = {
+LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
@@ -253,7 +246,6 @@ CORS_ALLOW_CREDENTIALS = True
 # DATE settings
 
 DATE_INPUT_FORMATS = ['%d.%m.%Y']
-
 
 # Auth settings
 

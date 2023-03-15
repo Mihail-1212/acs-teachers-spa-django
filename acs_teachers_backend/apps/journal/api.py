@@ -8,9 +8,12 @@ from rest_framework.permissions import (
 )
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework import status
 
 from django.utils.translation import gettext_lazy as _
+from django.utils.decorators import method_decorator
+
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 
 from . import serializers
 from . import models
@@ -29,12 +32,41 @@ class ApiParams(StrEnum):
     STUDENT_ID = "student_id"
 
 
+class SwaggerApiParams():
+    """
+    Swagger api enum set params for viewset classes
+    """
+    EDU_ORGANIZATION_ID_SPECIALITY = openapi.Parameter(ApiParams.EDU_ORGANIZATION_ID, openapi.IN_QUERY,
+                                                       required=False,
+                                                       description=_("Education organization id GET param"),
+                                                       type=openapi.TYPE_INTEGER)
+
+    SPECIALITY_ID_DISCIPLINE = openapi.Parameter(ApiParams.SPECIALITY_ID, openapi.IN_QUERY,
+                                                 description=_("Speciality id GET param"),
+                                                 required=False,
+                                                 type=openapi.TYPE_INTEGER)
+
+    TEACHER_ID_JOURNAL = openapi.Parameter(ApiParams.TEACHER_ID, openapi.IN_QUERY,
+                                           description=_("Teacher id GET param"),
+                                           required=True,
+                                           type=openapi.TYPE_INTEGER)
+
+    STUDENT_ID_JOURNAL = openapi.Parameter(ApiParams.STUDENT_ID, openapi.IN_QUERY,
+                                           description=_("Student id GET param"),
+                                           required=True,
+                                           type=openapi.TYPE_INTEGER)
+
+
 class EduOrganizationViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.EduOrganization.objects.all()
     serializer_class = serializers.EduOrganizationSerializer
     lookup_field = 'id'
 
 
+@method_decorator(name='list', decorator=swagger_auto_schema(
+    operation_description=_("Get full list of specialities OR get list by education_organization_id param"),
+    manual_parameters=[SwaggerApiParams.EDU_ORGANIZATION_ID_SPECIALITY],
+))
 class SpecialityViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.SpecialitySerializer
     lookup_field = 'id'
@@ -48,7 +80,7 @@ class SpecialityViewSet(viewsets.ReadOnlyModelViewSet):
 
         # Get education organization id from URL GET params
         edu_organization_id = self.request.query_params.get(ApiParams.EDU_ORGANIZATION_ID)
-        if edu_organization_id is not None:
+        if edu_organization_id is not None and self.action == 'list':
             if not edu_organization_id.isnumeric():
                 raise ValidationError(_("Education organization id should be a number value"))
             queryset = queryset.filter(edu_organizations__id=edu_organization_id)
@@ -56,6 +88,11 @@ class SpecialityViewSet(viewsets.ReadOnlyModelViewSet):
         return queryset
 
 
+@method_decorator(name='list', decorator=swagger_auto_schema(
+    operation_description=_("Get full list of disciplines OR get list "
+                            "by speciality_id param OR get list by edu_organization_id"),
+    manual_parameters=[SwaggerApiParams.SPECIALITY_ID_DISCIPLINE, SwaggerApiParams.EDU_ORGANIZATION_ID_SPECIALITY],
+))
 class DisciplineViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.DisciplineSerializer
     lookup_field = 'slug'
@@ -69,14 +106,14 @@ class DisciplineViewSet(viewsets.ReadOnlyModelViewSet):
 
         # Get speciality id from URL GET params
         speciality_id = self.request.query_params.get(ApiParams.SPECIALITY_ID)
-        if speciality_id is not None:
+        if speciality_id is not None and self.action == 'list':
             if not speciality_id.isnumeric():
                 raise ValidationError(_("Speciality id should be a number value"))
             queryset = queryset.filter(specialities__id=speciality_id)
 
         # Get education organization id from URL GET params
         edu_organization_id = self.request.query_params.get(ApiParams.EDU_ORGANIZATION_ID)
-        if edu_organization_id is not None:
+        if edu_organization_id is not None and self.action == 'list':
             if not edu_organization_id.isnumeric():
                 raise ValidationError(_("Education organization id should be a number value"))
             queryset = queryset.filter(specialities__edu_organizations__id=edu_organization_id)
@@ -102,6 +139,7 @@ class JournalViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.JournalSerializer
     lookup_field = 'slug'
 
+    @swagger_auto_schema(method='get', manual_parameters=[SwaggerApiParams.TEACHER_ID_JOURNAL])
     @action(detail=False, permission_classes=[(IsAdminUser | IsTeacher)])
     def get_journal_list_teacher(self, request):
         """
@@ -123,11 +161,12 @@ class JournalViewSet(viewsets.ReadOnlyModelViewSet):
         serializer = self.get_serializer(journal_list, many=True)
         return Response(serializer.data)
 
+    @swagger_auto_schema(method='get', manual_parameters=[SwaggerApiParams.STUDENT_ID_JOURNAL])
     @action(detail=False, permission_classes=[(IsAdminUser | IsStudent)])
     def get_journal_list_student(self, request):
         """
         Get journal list for student user
-        /journals/get_journal_list_student/?student=<id>
+        /journals/get_journal_list_student/?student_id=<id>
         """
         journal_list = self.get_queryset()
 
