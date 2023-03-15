@@ -25,12 +25,13 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
 
+# Swagger view instance
 schema_view = get_schema_view(
    openapi.Info(
       title="Journal and Lessons api",
       default_version='v1',
       description="Api for auto control system site",
-      contact=openapi.Contact(email="m.a.mokruschin@yandex.ru"),
+      contact=openapi.Contact(email="m.a.mokruschin@yandex.ru"),    # TODO: get from .env
       license=openapi.License(name="MIT License"),
    ),
    public=True,
@@ -48,6 +49,9 @@ urlpatterns = [
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+
+    # Auth routes
+    path('authorization/', include('authorization.urls')),
 
     # API routes
     path('api-journal/', include('journal.urls')),

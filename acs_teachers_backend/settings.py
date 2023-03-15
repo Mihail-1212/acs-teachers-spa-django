@@ -70,9 +70,11 @@ THIRD_PARTY_APPS_BEFORE = [
 
 THIRD_PARTY_APPS_AFTER = [
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
     'django_filters',
     'drf_yasg',
+    'dj_rest_auth'
 ]
 
 PROJECT_APPS = [
@@ -91,6 +93,9 @@ REST_FRAMEWORK = {
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
     ],
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
 }
@@ -224,13 +229,14 @@ LOGGING = {
             'class': 'logging.StreamHandler'
         },
     },
-    'loggers': {
+        'loggers': {
         '': {  # 'catch all' loggers by referencing it with the empty string
             'handlers': ['console'],
             'level': 'DEBUG',
         },
     },
 }
+
 
 # CORS settings
 # https://github.com/adamchainz/django-cors-headers#setup
@@ -243,10 +249,21 @@ else:
 CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
 CORS_ALLOW_CREDENTIALS = True
 
+
 # DATE settings
 
 DATE_INPUT_FORMATS = ['%d.%m.%Y']
 
+
 # Auth settings
 
 AUTH_USER_MODEL = 'authorization.User'
+
+
+# REST authorization settings
+
+REST_AUTH = {
+    'USE_JWT': True,
+    'JWT_AUTH_COOKIE': env('JWT_AUTH_COOKIE'),
+    'JWT_AUTH_REFRESH_COOKIE': env('JWT_AUTH_REFRESH_COOKIE'),
+}
