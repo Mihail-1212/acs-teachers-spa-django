@@ -152,7 +152,7 @@ class JournalViewSet(viewsets.ReadOnlyModelViewSet):
         if self.action == 'list':
             permission_classes = [IsAdminUser]
         elif self.action == 'retrieve':
-            permission_classes = [(IsAdminUser | IsTeacher | IsStudent)]     # TODO: add IsStudent
+            permission_classes = [(IsAdminUser | IsTeacher | IsStudent)]
         else:
             permission_classes = [IsAdminUser]
         return [permission() for permission in permission_classes]
