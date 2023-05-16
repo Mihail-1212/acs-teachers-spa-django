@@ -39,22 +39,24 @@ schema_view = get_schema_view(
 )
 
 
+api_routes = [
+    path('authorization/', include('authorization.urls')),
+    path('journal/', include('journal.urls')),
+]
+
+
 urlpatterns = [
     # Admin routes
     path('grappelli/', include('grappelli.urls')),
     path('admin/', admin.site.urls),
 
-    # path('swagger/', schema_view),
     # Swagger routes
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
     # Auth routes
-    path('authorization/', include('authorization.urls')),
-
-    # API routes
-    path('api-journal/', include('journal.urls')),
+    path('api/', include(api_routes)),
 ]
 
 

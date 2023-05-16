@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+from datetime import timedelta
 from pathlib import Path
 import environ
 import os
@@ -74,7 +74,8 @@ THIRD_PARTY_APPS_AFTER = [
     'corsheaders',
     'django_filters',
     'drf_yasg',
-    'dj_rest_auth'
+    'dj_rest_auth',
+    'rest_framework_simplejwt',
 ]
 
 PROJECT_APPS = [
@@ -95,7 +96,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
+        'rest_framework_simplejwt.authentication.JWTAuthentication'
     ],
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
 }
@@ -262,8 +263,21 @@ AUTH_USER_MODEL = 'authorization.User'
 
 # REST authorization settings
 
-REST_AUTH = {
-    'USE_JWT': True,
-    'JWT_AUTH_COOKIE': env('JWT_AUTH_COOKIE'),
-    'JWT_AUTH_REFRESH_COOKIE': env('JWT_AUTH_REFRESH_COOKIE'),
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=int(env('JWT_ACCESS_TOKEN_LIFETIME'))),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=int(env('JWT_REFRESH_TOKEN_LIFETIME'))),
+    'TOKEN_OBTAIN_SERIALIZER': 'authorization.serializers.CustomTokenObtainPairSerializer',
+}
+
+
+# Swagger settings
+
+SWAGGER_SETTINGS = {
+   'SECURITY_DEFINITIONS': {
+      'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+      }
+   }
 }
